@@ -1,0 +1,14 @@
+    <script>
+        window.AIMSYNC_SHELL = {
+            localIp: {{ local_ip | tojson }},
+            port: 5000,
+            logoUrl: {{ url_for('static', filename='AimSync_logo.png') | tojson }},
+            appName: {{ app_name | tojson }},
+            exeName: {{ app_exe_name | tojson }},
+        };
+    </script>
+    <script src="{{ url_for('static', filename='qrcode.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='shell.js') }}?v={{ app_version }}"></script>
+    {% if not recoil_only|default(false) %}
+    <script src="{{ url_for('static', filename='updates.js') }}"></script>
+    {% endif %}

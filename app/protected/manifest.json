@@ -1,0 +1,6 @@
+{
+  "modules": [
+    "recoil/engine.py",
+    "recoil/weapon_data.py"
+  ]
+}

@@ -1,0 +1,77 @@
+<aside id="hub-sidebar" class="hub-sidebar">
+    <p class="hub-brand">
+        <img src="{{ url_for('static', filename='AimSync_logo.png') }}?v={{ app_version }}" alt="" class="hub-brand-mark">
+        Aim<span>Sync</span> <span class="hub-brand-suffix">CS2 Makcu</span>
+    </p>
+
+    <div class="hub-status">
+        <div class="hub-status-row">
+            <span class="hub-status-label">Status</span>
+            <span id="hub-makcu-status" class="hub-mono hub-status-disconnected">—</span>
+        </div>
+        <div class="hub-status-row">
+            <span class="hub-status-label">Port</span>
+            <span id="hub-makcu-port" class="hub-mono">—</span>
+        </div>
+        <div class="hub-status-row hub-status-row-ip">
+            <span class="hub-status-label">2nd PC</span>
+            <button type="button"
+                    id="hub-lan-ip"
+                    class="hub-mono hub-ip-copy"
+                    title="Click to copy LAN address"
+                    data-copy="http://{{ local_ip }}:5000"
+                    onclick="copyHubLanIp(this)">{{ local_ip }}:5000</button>
+        </div>
+        <p class="hub-ip-hint">Click address to copy · same Wi‑Fi</p>
+        <div class="hub-status-row">
+            <span class="hub-status-label">Version</span>
+            <span class="hub-mono text-white/70">{{ app_version }}</span>
+        </div>
+    </div>
+
+    <nav class="hub-nav" aria-label="Main">
+        {% if hub_standalone|default(false) %}
+        <a href="/" class="hub-nav-btn tab-button {{ 'active' if request.path == '/' else '' }}">Dashboard</a>
+        <a href="/?tab=CS2" class="hub-nav-btn tab-button">Game Engine</a>
+        {% else %}
+        <button type="button" class="hub-nav-btn tab-button active" data-tab="global">Dashboard</button>
+        <button type="button" class="hub-nav-btn tab-button" data-tab="CS2">Game Engine</button>
+        {% endif %}
+    </nav>
+
+    <div class="hub-sidebar-footer">
+        <div class="hub-footer-links">
+            <div class="hub-footer-support-wrap" id="hub-support-wrap">
+                <button type="button" class="hub-footer-link hub-footer-link-expand" onclick="toggleHubSupportMenu()">
+                    <svg class="hub-footer-icon hub-footer-icon-heart" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>Support</span>
+                    <svg class="hub-footer-chevron" id="hub-support-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="hub-support-menu" class="hub-support-menu hidden">
+                    <a href="https://ko-fi.com/kava4" target="_blank" rel="noopener" class="hub-support-item">Support on Ko-fi</a>
+                    <a href="https://paypal.me/kava4" target="_blank" rel="noopener" class="hub-support-item">Donate via PayPal</a>
+                </div>
+            </div>
+            <button type="button" class="hub-footer-link" onclick="toggleQRModal()">
+                <svg class="hub-footer-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="7" y="2.5" width="10" height="19" rx="2"/>
+                    <path d="M11 18.5h2" stroke-linecap="round"/>
+                </svg>
+                <span>Mobile Link</span>
+            </button>
+        </div>
+        <div class="hub-sidebar-exit">
+            <button type="button" class="hub-exit-btn" onclick="openStopAppModal()">
+                <svg class="hub-footer-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18.36 6.64a9 9 0 11-12.73 0M12 2v10" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Stop App</span>
+            </button>
+        </div>
+    </div>
+</aside>
+<div id="hub-sidebar-backdrop" class="hub-sidebar-backdrop" onclick="toggleHubSidebar(true)"></div>

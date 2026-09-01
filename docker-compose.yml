@@ -1,0 +1,37 @@
+# AimSync CS2 Makcu — recoil-only on Raspberry Pi (Makcu USB)
+# Usage:
+#   1. Plug Makcu into the Pi
+#   2. Confirm device: ls /dev/ttyUSB* /dev/ttyACM*
+#   3. docker compose up -d --build
+#   4. Open http://<pi-ip>:5000
+
+services:
+  aimsync-cs2-makcu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aimsync-cs2-makcu:latest
+    container_name: aimsync-cs2-makcu
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      AIMSYNC_DOCKER: "1"
+      AIMSYNC_HEADLESS: "1"
+      AIMSYNC_RECOIL_ONLY: "1"
+      AIMSYNC_CONFIG_DIR: /data
+      # Set your Pi LAN IP for the sidebar copy link (change if DHCP differs):
+      AIMSYNC_LAN_IP: ${AIMSYNC_LAN_IP:-192.168.1.80}
+      # Optional override if auto-detect fails:
+      # AIMSYNC_MAKCU_DEVICE: /dev/ttyUSB0
+    volumes:
+      - aimsync-cs2-makcu-data:/data
+    privileged: true
+    group_add:
+      - dialout
+    # Optional fixed mapping when Makcu is always on the same tty (faster than auto-detect):
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
+
+volumes:
+  aimsync-cs2-makcu-data:

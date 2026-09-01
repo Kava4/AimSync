@@ -1,0 +1,63 @@
+"""Remote feature flags (updates, announcements)."""
+
+from __future__ import annotations
+
+import logging
+import time
+from typing import Any
+
+from app.core.env import env_get
+from app.core.github import get_json, raw_github_url
+from app.core.identity import GITHUB_REPO, LOG_NAME
+
+logger = logging.getLogger(f'{LOG_NAME}.features')
+
+_REMOTE_TTL = 300.0
+_REMOTE_CACHE: dict[str, Any] = {'data': {}, 'fetched_at': 0.0, 'error': None}
+
+DEFAULT_REPO = env_get('UPDATES_REPO', GITHUB_REPO)
+DEFAULT_REF = env_get('APP_CONFIG_REF', 'main')
+DEFAULT_CONFIG_PATH = env_get('APP_CONFIG_PATH', 'release/app-config.json')
+
+
+def _config_url() -> str:
+    custom = env_get('APP_CONFIG_URL')
+    if custom:
+        return custom
+    return raw_github_url(DEFAULT_REPO, DEFAULT_REF, DEFAULT_CONFIG_PATH)
+
+
+def invalidate_remote_config_cache() -> None:
+    _REMOTE_CACHE['fetched_at'] = 0.0
+
+
+def fetch_remote_config(*, force: bool = False) -> dict[str, Any]:
+    now = time.time()
+    if (
+        not force
+        and _REMOTE_CACHE['data']
+        and now - float(_REMOTE_CACHE['fetched_at'] or 0) < _REMOTE_TTL
+    ):
+        return dict(_REMOTE_CACHE['data'])
+
+    data, err = get_json(_config_url())
+    if err or not isinstance(data, dict):
+        logger.debug('Remote app-config unavailable: %s', err)
+        _REMOTE_CACHE['error'] = err
+        if _REMOTE_CACHE['data']:
+            return dict(_REMOTE_CACHE['data'])
+        return {}
+
+    _REMOTE_CACHE['data'] = data
+    _REMOTE_CACHE['fetched_at'] = now
+    _REMOTE_CACHE['error'] = None
+    return dict(data)
+
+
+def feature_flags_status(*, refresh: bool = False) -> dict[str, Any]:
+    remote = fetch_remote_config(force=refresh)
+    return {
+        'remote_config': remote,
+        'remote_error': _REMOTE_CACHE.get('error'),
+        'config_url': _config_url(),
+    }

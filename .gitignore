@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.spec
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Virtual environments
+.venv/
+venv/
+build-venv/
+aimsync-venv/
+env/
+
+# Maintainer-only plaintext sources (shipped as sealed blobs in releases)
+app/_src/
+
+
+# Secrets / seal key (never commit)
+.env
+.env.*
+*.pem
+app/protected/.seal-key
+
+# Local runtime data
+.beta-data/
+.aimsync-data/
+*.log
+*.bak
+_tmp*.html
+
+# Legacy / export scratch
+.backup-legacy/
+.wiki-clone/
+original_source/
+rebuild/
+AimSync_CLEAN_SOURCE.txt
+
+# Release archives (exe is built locally)
+dist/*.zip
+
+# IDE / OS
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+.onedriveignore
+
+# Duplicate pattern exports (canonical copy: app/recoil/data/)
+/RecoilPatterns.json
+/RecoilModifiers.json
+/Generator.py
+
+# Local / maintainer only (not public repo)
+scripts/run_dev.bat
+scripts/windows/run_dev.bat
+scripts/windows/build_debug.bat
+tests/
+/Server/
+/Recoil/
+/docs/
+/AI/
+/PatternGenerator/
+/Config/
+/build-helper/
+/Makcu/
+/wiki/
+
+models/
+*.onnx
+*.pt
+*.engine

@@ -1,0 +1,5 @@
+# AimSync — recoil + Makcu + web UI
+makcu
+Flask>=3.1
+requests>=2.31
+Werkzeug>=3.1

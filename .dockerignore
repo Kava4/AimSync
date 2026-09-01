@@ -1,0 +1,24 @@
+# .dockerignore for Pi recoil image
+.git
+.github
+.venv
+build-venv
+build
+dist
+release
+wiki
+website
+tests
+cloud-api
+assets
+*.md
+!requirements-pi.txt
+AimSync.App
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+app/_src
+scripts
+.dockerignore
+Dockerfile
+docker-compose.yml
